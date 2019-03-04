@@ -1,4 +1,2 @@
-##README GOES HERE
-
-### How to generate jdepend reports with maven
+##README GOES HERE AS SPECIFIED IN THE ASSIGNMENT BRIEF
 

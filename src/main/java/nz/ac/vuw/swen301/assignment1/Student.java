@@ -11,7 +11,7 @@ public class Student {
     private String firstName = null;
     private Degree degree = null;
 
-    public Student(String id, String name, String firstName, Degree degree) {
+    Student(String id, String name, String firstName, Degree degree) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;

@@ -9,7 +9,7 @@ public class Degree {
     private String id;
     private String name;
 
-    public Degree(String id, String name) {
+    Degree(String id, String name) {
         this.id = id;
         this.name = name;
     }

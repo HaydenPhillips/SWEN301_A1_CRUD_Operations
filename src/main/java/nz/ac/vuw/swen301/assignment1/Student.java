@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents a student.
+ * Note that id is immutable !!
  */
 public class Student {
     private String id = null;

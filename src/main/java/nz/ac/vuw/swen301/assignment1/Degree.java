@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents a degree.
+ * Note that id is immutable !!
  */
 public class Degree {
     private String id;

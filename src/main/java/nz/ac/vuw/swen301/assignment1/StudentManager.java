@@ -42,7 +42,7 @@ public class StudentManager {
 
     /**
      * Delete a student instance from the database.
-     * I.,e., after this, reading
+     * I.e., after this, trying to read a student with this id will return null.
      * @param student
      */
     public static void delete(Student student) {}

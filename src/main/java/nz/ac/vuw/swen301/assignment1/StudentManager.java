@@ -1,6 +1,8 @@
 package nz.ac.vuw.swen301.assignment1;
 
 import nz.ac.vuw.swen301.studentmemdb.StudentDB;
+
+import java.sql.*;
 import java.util.Collection;
 
 /**
@@ -25,9 +27,36 @@ public class StudentManager {
      * @param id
      * @return
      */
-    public static Student readStudent(String id) {
+    public static Student readStudent(String id){
+        String url = "jdbc:derby:memory:student_records";               //database specific url
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(url);
+
+        Statement statement = connection.createStatement();
+
+        String sql = "select * from students where id = '"+id+"'";
+        ResultSet result = statement.executeQuery(sql);
+
+        while (result.next()) {             // id,first_name,name,degree (all strings), ids range
+            String studentid = result.getString("id");
+            String first_name = result.getString("first_name");
+            String name = result.getString("name");
+            String degree = result.getString("degree");
+
+            Student student = new Student(studentid, name, first_name, new Degree(degree, name));
+            System.out.println(degree);
+            System.out.println(student.getName());
+            System.out.println(student.getFirstName());
+            System.out.println(student.getDegree().getId()+", "+student.getDegree().getName());
+            return student;
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
+
 
     /**
      * Return a degree instance with values from the row with the respective id in the database.
@@ -37,23 +66,69 @@ public class StudentManager {
      * @return
      */
     public static Degree readDegree(String id) {
+        String url = "jdbc:derby:memory:student_records";       //database specific url
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(url);
+
+            Statement statement = connection.createStatement();
+
+            String sql = "select * from degrees where id = '"+id+"'";
+            ResultSet result = statement.executeQuery(sql);
+
+            while (result.next()) { // id,first_name,name,degree (all strings), ids range
+                String degreeID = result.getString("id");
+                String name = result.getString("name");
+
+                Degree degree = new Degree(degreeID, name);
+                System.out.println(degree);
+                System.out.println(degree.getId()+", "+degree.getName());
+                return degree;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
+
 
     /**
      * Delete a student instance from the database.
      * I.e., after this, trying to read a student with this id will return null.
      * @param student
      */
-    public static void delete(Student student) {}
+    public static void delete(Student student) {
+
+    }
+
 
     /**
      * Update (synchronize) a student instance with the database.
      * The id will not be changed, but the respective database record  may have changed names, first names or degree.
-     * Note that names and first names can only be max 1o characters long.
+     * Note that names and first names can only be max 1o characters long.                      //test for this
      * @param student
      */
-    public static void update(Student student) {}
+    public static void update(Student student) {
+
+//        String url = "jdbc:derby:memory:student_records";           //database specific url
+//        Connection connection;
+//        try {
+//            connection = DriverManager.getConnection(url);
+//
+//            Statement statement = connection.createStatement();
+//
+//            String sql = "UPDATE student SET first_name='first_name', name= 'name', degree= 'degree'";
+//            statement.executeUpdate(sql);
+//
+//                String studentid = student.getId();
+//                String first_name = student.getFirstName();
+//                String name = student.getName();
+//                Degree degree = student.getDegree();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+    }
 
 
     /**
@@ -83,6 +158,5 @@ public class StudentManager {
     public static Iterable<String> getAllDegreeIds() {
         return null;
     }
-
 
 }

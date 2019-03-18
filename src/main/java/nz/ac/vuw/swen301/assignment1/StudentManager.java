@@ -46,9 +46,8 @@ public class StudentManager {
 
             Student student = new Student(studentid, name, first_name, new Degree(degree, name));
             System.out.println(degree);
-            System.out.println(student.getName());
-            System.out.println(student.getFirstName());
-            System.out.println(student.getDegree().getId()+", "+student.getDegree().getName());
+            System.out.println(student.getId()+" - "+student.getName()+" - "+student.getFirstName());
+            System.out.println("Degree:"+student.getDegree().getId()+", "+student.getDegree().getName());
             return student;
         }
         } catch (SQLException e) {
@@ -81,8 +80,7 @@ public class StudentManager {
                 String name = result.getString("name");
 
                 Degree degree = new Degree(degreeID, name);
-                System.out.println(degree);
-                System.out.println(degree.getId()+", "+degree.getName());
+                System.out.println("Degree: "+degree.getId()+" - "+degree.getName());
                 return degree;
             }
         } catch (SQLException e) {
@@ -99,6 +97,22 @@ public class StudentManager {
      */
     public static void delete(Student student) {
 
+        String url = "jdbc:derby:memory:student_records";           //database specific url
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(url);
+
+            Statement statement = connection.createStatement();
+            String sid = student.getId();
+
+            String sql = "delete from students where id='"+sid+"'";
+            statement.executeUpdate(sql);
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -110,24 +124,25 @@ public class StudentManager {
      */
     public static void update(Student student) {
 
-//        String url = "jdbc:derby:memory:student_records";           //database specific url
-//        Connection connection;
-//        try {
-//            connection = DriverManager.getConnection(url);
-//
-//            Statement statement = connection.createStatement();
-//
-//            String sql = "UPDATE student SET first_name='first_name', name= 'name', degree= 'degree'";
-//            statement.executeUpdate(sql);
-//
-//                String studentid = student.getId();
-//                String first_name = student.getFirstName();
-//                String name = student.getName();
-//                Degree degree = student.getDegree();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        String url = "jdbc:derby:memory:student_records";           //database specific url
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(url);
+
+            Statement statement = connection.createStatement();
+            String sid = student.getId();
+            String name = student.getName();
+            String firstName = student.getFirstName();
+            Degree degree = student.getDegree();
+
+
+            String sql = "UPDATE students SET name='"+name+"', first_name='"+firstName+"', degree='"+degree+"' where id= '"+sid+"'";
+            statement.executeUpdate(sql);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

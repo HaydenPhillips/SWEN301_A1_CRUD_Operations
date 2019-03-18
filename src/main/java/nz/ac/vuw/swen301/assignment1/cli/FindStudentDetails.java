@@ -1,5 +1,7 @@
 package nz.ac.vuw.swen301.assignment1.cli;
 
+import nz.ac.vuw.swen301.assignment1.Degree;
+import nz.ac.vuw.swen301.assignment1.Student;
 import nz.ac.vuw.swen301.assignment1.StudentManager;
 
 public class FindStudentDetails {
@@ -12,7 +14,10 @@ public class FindStudentDetails {
      * @param arg
      */
     public static void main (String[] arg) {
-        StudentManager.readStudent("id69");
-        StudentManager.readDegree("deg6");
+//        StudentManager.update(new Student("id420", "Scott", "M", new Degree("deg8", "scott")));
+        StudentManager.readStudent("id420");
+        StudentManager.readDegree("deg4");
+//        StudentManager.delete();
+        StudentManager.readStudent("id420");
     }
 }

@@ -126,7 +126,7 @@ public class StudentManager {
 
         String url = "jdbc:derby:memory:student_records";           //database specific url
         Connection connection;
-        try {
+    try {
             connection = DriverManager.getConnection(url);
 
             Statement statement = connection.createStatement();
@@ -139,6 +139,7 @@ public class StudentManager {
             String sql = "UPDATE students SET name='"+name+"', first_name='"+firstName+"', degree='"+degree+"' where id= '"+sid+"'";
             statement.executeUpdate(sql);
 
+//            Strings from the database may be too long... Need to check they are 10 chars or less
 
         } catch (SQLException e) {
             e.printStackTrace();

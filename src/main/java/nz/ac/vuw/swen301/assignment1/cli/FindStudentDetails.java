@@ -14,7 +14,7 @@ public class FindStudentDetails {
      * @param arg
      */
     public static void main (String[] arg) {
-//        StudentManager.update(new Student("id420", "Scott", "M", new Degree("deg8", "scott")));
+        StudentManager.update(new Student("id420", "Scott", "M", new Degree("deg8", "scott")));
         StudentManager.readStudent("id420");
         StudentManager.readDegree("deg4");
 //        StudentManager.delete();

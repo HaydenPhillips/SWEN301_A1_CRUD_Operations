@@ -43,6 +43,10 @@ public class Student {
         return degree;
     }
 
+    public String getDegreeName() {return degree.getName(); }
+
+    public String getDegreeID() {return degree.getId(); }
+
     public void setDegree(Degree degree) {
         this.degree = degree;
     }

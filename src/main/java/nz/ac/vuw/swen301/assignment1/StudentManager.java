@@ -3,7 +3,9 @@ package nz.ac.vuw.swen301.assignment1;
 import nz.ac.vuw.swen301.studentmemdb.StudentDB;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * A student managers providing basic CRUD operations for instances of Student, and a read operation for instanbces of Degree.
@@ -11,6 +13,7 @@ import java.util.Collection;
  */
 public class StudentManager {
 
+    public static int availableID = 10000;
     //  DO NOT REMOVE THE FOLLOWING -- THIS WILL ENSURE THAT THE DATABASE IS AVAILABLE
     // AND THE APPLICATION CAN CONNECT TO IT WITH JDBC
     static {
@@ -29,27 +32,25 @@ public class StudentManager {
      */
     public static Student readStudent(String id){
         String url = "jdbc:derby:memory:student_records";               //database specific url
-        Connection connection;
-        try {
-            connection = DriverManager.getConnection(url);
+        try (Connection connection = DriverManager.getConnection(url)){
 
-        Statement statement = connection.createStatement();
+            try (Statement statement = connection.createStatement()) {
 
-        String sql = "select * from students where id = '"+id+"'";
-        ResultSet result = statement.executeQuery(sql);
+                String sql = "select * from students where id = '"+id+"'";
+                ResultSet result = statement.executeQuery(sql);
 
-        while (result.next()) {             // id,first_name,name,degree (all strings), ids range
-            String studentid = result.getString("id");
-            String first_name = result.getString("first_name");
-            String name = result.getString("name");
-            String degree = result.getString("degree");
 
-            Student student = new Student(studentid, name, first_name, new Degree(degree, name));
-            System.out.println(degree);
-            System.out.println(student.getId()+" - "+student.getName()+" - "+student.getFirstName());
-            System.out.println("Degree:"+student.getDegree().getId()+", "+student.getDegree().getName());
-            return student;
-        }
+                while (result.next()) {             // id,first_name,name,degree (all strings), ids range
+                    String sid = result.getString("id");
+                    String first_name = result.getString("first_name");
+                    String name = result.getString("name");
+                    String degree = result.getString("degree");
+
+                    Student student = new Student(sid, name, first_name, new Degree(degree, name));
+//                    System.out.println(student.getId()+" - "+student.getName()+" - "+student.getFirstName()+" Degree: "+student.getDegree().getId()+"");
+                    return student;
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,7 +81,7 @@ public class StudentManager {
                 String name = result.getString("name");
 
                 Degree degree = new Degree(degreeID, name);
-                System.out.println("Degree: "+degree.getId()+" - "+degree.getName());
+//                System.out.println("Degree: "+degree.getId()+" - "+degree.getName()+" - "+degree+"");
                 return degree;
             }
         } catch (SQLException e) {
@@ -98,18 +99,16 @@ public class StudentManager {
     public static void delete(Student student) {
 
         String url = "jdbc:derby:memory:student_records";           //database specific url
-        Connection connection;
-        try {
-            connection = DriverManager.getConnection(url);
 
-            Statement statement = connection.createStatement();
-            String sid = student.getId();
+        try (Connection connection = DriverManager.getConnection(url)) {
 
-            String sql = "delete from students where id='"+sid+"'";
-            statement.executeUpdate(sql);
+            try (Statement statement = connection.createStatement()) {
+                String sid = student.getId();
 
+                String sql = "delete from students where id='"+sid+"'";
+                statement.executeUpdate(sql);
 
-
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,28 +123,32 @@ public class StudentManager {
      */
     public static void update(Student student) {
 
-        String url = "jdbc:derby:memory:student_records";           //database specific url
-        Connection connection;
-    try {
-            connection = DriverManager.getConnection(url);
+        if(student.getFirstName().length() > 10){
+            student.setFirstName(student.getFirstName().substring(0, 9));
+        }
+        if(student.getName().length() > 10){
+            student.setFirstName(student.getName().substring(0, 9));
+        }
 
-            Statement statement = connection.createStatement();
+        String url = "jdbc:derby:memory:student_records";           //database specific url
+
+    try (Connection connection = DriverManager.getConnection(url)){
+
+        try (Statement statement = connection.createStatement()) {
             String sid = student.getId();
             String name = student.getName();
             String firstName = student.getFirstName();
             Degree degree = student.getDegree();
 
 
-            String sql = "UPDATE students SET name='"+name+"', first_name='"+firstName+"', degree='"+degree+"' where id= '"+sid+"'";
+            String sql = "UPDATE STUDENTS SET  first_name='" + firstName + "' , name='" + name + "', degree='" + degree.getId() + "' where id= '" + sid + "'";
             statement.executeUpdate(sql);
-
-//            Strings from the database may be too long... Need to check they are 10 chars or less
+        }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Create a new student with the values provided, and save it to the database.
@@ -155,7 +158,22 @@ public class StudentManager {
      * @param degree
      * @return a freshly created student instance
      */
+
     public static Student createStudent(String name,String firstName,Degree degree) {
+
+        String url = "jdbc:derby:memory:student_records";           //database specific url
+
+        try (Connection connection = DriverManager.getConnection(url)) {
+
+            try (Statement statement = connection.createStatement()) {
+
+                String sql = "INSERT INTO STUDENTS (id, name, first_name, degree) VALUES ('id" + (availableID++) + "', '" + name + "', '" + firstName + "', '" + degree.getId() + "')";
+                statement.executeUpdate(sql);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -163,7 +181,26 @@ public class StudentManager {
      * Get all student ids currently being used in the database.
      * @return
      */
-    public static Collection<String> getAllStudentIds() {
+    public static Collection<String> getAllStudentIds(){
+        String url = "jdbc:derby:memory:student_records";           //database specific url
+
+        try (Connection connection = DriverManager.getConnection(url)) {
+
+            try (Statement statement = connection.createStatement()) {
+
+                String sql = "select * from STUDENTS";
+                ResultSet result = statement.executeQuery(sql);
+
+                ArrayList<String> allStudents = new ArrayList<>();
+                while(result.next()){
+                    allStudents.add(result.getString("id"));
+                }
+                System.out.println(allStudents);
+                return allStudents;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -172,6 +209,24 @@ public class StudentManager {
      * @return
      */
     public static Iterable<String> getAllDegreeIds() {
+        String url = "jdbc:derby:memory:student_records";           //database specific url
+
+        try (Connection connection = DriverManager.getConnection(url)) {
+
+            try (Statement statement = connection.createStatement()) {
+
+                String sql = "select * from DEGREES";
+                ResultSet degreeResult = statement.executeQuery(sql);
+
+                ArrayList<String> allDegrees = new ArrayList<>();
+                while(degreeResult.next()){
+                    allDegrees.add(degreeResult.getString("id"));
+                }
+                return allDegrees;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

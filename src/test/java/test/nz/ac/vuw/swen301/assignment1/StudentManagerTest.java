@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Hashtable;
 
 import static org.junit.Assert.*;
 
@@ -56,6 +57,16 @@ public class StudentManagerTest {
         assertNull(student.getDegreeName().equals("fc"));
     }
 
+//    @Test
+//    public void testReadStudentFromHashTable() throws Exception {
+//
+//        Student student = new StudentManager().readStudent("id420");
+//        Student student2 = new StudentManager().readStudent("id420");
+//
+//        assert student != null;
+//
+//        assertTrue();
+//    }
 
     @Test
     public void testReadDegree() throws Exception {
@@ -136,7 +147,7 @@ public class StudentManagerTest {
     public void test1000read(){
         long start = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
-            StudentManager.readStudent("id"+ (Math.random() * 10000));
+            StudentManager.readStudent("id"+ (int)(Math.random() * 10000));
         }
         long end = System.currentTimeMillis();
         System.out.println("time taken: " + (end-start));

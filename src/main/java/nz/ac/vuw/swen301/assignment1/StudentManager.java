@@ -3,9 +3,7 @@ package nz.ac.vuw.swen301.assignment1;
 import nz.ac.vuw.swen301.studentmemdb.StudentDB;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * A student managers providing basic CRUD operations for instances of Student, and a read operation for instanbces of Degree.
@@ -14,6 +12,7 @@ import java.util.Iterator;
 public class StudentManager {
 
     public static int availableID = 10000;
+    public static HashMap<String, Student> hashM = new HashMap<>();
     //  DO NOT REMOVE THE FOLLOWING -- THIS WILL ENSURE THAT THE DATABASE IS AVAILABLE
     // AND THE APPLICATION CAN CONNECT TO IT WITH JDBC
     static {
@@ -31,6 +30,12 @@ public class StudentManager {
      * @return
      */
     public static Student readStudent(String id){
+
+        if(hashM.containsKey(id)) {
+            Student s = hashM.get(id);
+            return s;
+        }
+
         String url = "jdbc:derby:memory:student_records";               //database specific url
         try (Connection connection = DriverManager.getConnection(url)){
 
@@ -48,6 +53,7 @@ public class StudentManager {
 
                     Student student = new Student(sid, name, first_name, new Degree(degree, name));
 //                    System.out.println(student.getId()+" - "+student.getName()+" - "+student.getFirstName()+" Degree: "+student.getDegree().getId()+"");
+                    hashM.put(id, student);
                     return student;
                 }
             }
@@ -66,6 +72,7 @@ public class StudentManager {
      * @return
      */
     public static Degree readDegree(String id) {
+
         String url = "jdbc:derby:memory:student_records";       //database specific url
         Connection connection;
         try {

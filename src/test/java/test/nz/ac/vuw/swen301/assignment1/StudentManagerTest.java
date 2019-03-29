@@ -54,15 +54,9 @@ public class StudentManagerTest {
 
     @Test
     public void testReadStudent() throws Exception {
-        Student student = new StudentManager().readStudent("id420");
-
+        Student student = StudentManager.readStudent("id420");
         assert student != null;
-        System.out.println(student.getDegreeName());
-        System.out.println(student.getDegreeID());
-        Degree dg = StudentManager.readDegree("id20");
-        System.out.println(dg.getName()+" "+dg.getId());
-        System.out.println("Degree: "+dg.getId()+" - "+dg.getName()+" - "+dg+"");
-        assertNull(student.getDegreeName().equals("fc"));
+        assertTrue(student.getDegree().getId().equals("deg4"));
     }
 
     @Test
@@ -83,15 +77,6 @@ public class StudentManagerTest {
         assert changedStudent != null;
         assertTrue(changedStudent.getFirstName().equals("Scotty"));
     }
-
-
-
-//    @Test
-//    public void testDeleteStudent() throws Exception {
-//        Student s = StudentManager.readStudent("id69");
-//        StudentManager.delete(s);
-//        assertNull(StudentManager.readStudent("id69"));
-//    }
 
 
     @Test
@@ -122,22 +107,8 @@ public class StudentManagerTest {
         }
     }
 
-
-//    @Test
-//    public void testCreate02(){
-//        Degree degree = StudentManager.readDegree("deg1");
-//        assert degree != null;
-//        for (int i = 0; i < 100; i++) {
-//            StudentManager.createStudent("Do"+i,"Scott"+i, degree);
-//        }
-//        for (int i = 0; i < 100; i++) {
-//            assertNotNull(StudentManager.readStudent("id"+numberOfRows++));
-//        }
-//    }
-
-
     @Test
-    public void test1000read(){
+    public void timeTest(){
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
             StudentManager.readStudent("id"+ (int)(Math.random()*10000));
@@ -147,4 +118,5 @@ public class StudentManagerTest {
         System.out.println("Time taken to read 1000 queries: " + totalTime);
         assertTrue(totalTime <= 1000);
     }
+
 }

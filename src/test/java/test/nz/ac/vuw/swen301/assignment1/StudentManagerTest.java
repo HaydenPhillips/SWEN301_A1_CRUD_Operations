@@ -43,6 +43,14 @@ public class StudentManagerTest {
         assertTrue(sFirstName.length() <= 10);
     }
 
+    @Test
+    public void testCreate01(){
+        Degree degree = StudentManager.readDegree("deg4");
+        assert degree != null;
+        StudentManager.createStudent("DoWang","Scotty", degree);
+        assertNotNull(StudentManager.readStudent("id10000"));
+    }
+
 
     @Test
     public void testReadStudent() throws Exception {
@@ -57,17 +65,6 @@ public class StudentManagerTest {
         assertNull(student.getDegreeName().equals("fc"));
     }
 
-//    @Test
-//    public void testReadStudentFromHashTable() throws Exception {
-//
-//        Student student = new StudentManager().readStudent("id420");
-//        Student student2 = new StudentManager().readStudent("id420");
-//
-//        assert student != null;
-//
-//        assertTrue();
-//    }
-
     @Test
     public void testReadDegree() throws Exception {
         Degree deg = StudentManager.readDegree("deg1");
@@ -75,40 +72,6 @@ public class StudentManagerTest {
         assertTrue(deg.getName().equals("BSc Computer Graphics"));
     }
 
-    @Test
-    public void testAllStudentID() throws Exception {
-        Collection<String> allStudents = StudentManager.getAllStudentIds();
-        assert allStudents != null;
-        int count = 0;
-        for (String s : allStudents) {
-            assertEquals(s,("id"+(count++)));
-        }
-    }
-
-//    @Test
-//    public void testDeleteStudent() throws Exception {
-//        Student s = StudentManager.readStudent("id69");
-//        StudentManager.delete(s);
-//        assertNull(StudentManager.readStudent("id69"));
-//    }
-
-
-    @Test
-    public void testAllDegreeIDs01() throws Exception {
-        ArrayList<String> allDegrees = (ArrayList<String>) StudentManager.getAllDegreeIds();
-        assert allDegrees != null;
-        int count = 0;
-        for (String s : allDegrees) {
-            assertTrue(s.equals("deg"+(count++)));
-        }
-    }
-
-    @Test
-    public void testAllDegreeIDs02() throws Exception {
-        ArrayList<String> allDegrees = (ArrayList<String>) StudentManager.getAllDegreeIds();
-        assert allDegrees != null;
-        assertTrue(allDegrees.size() == 16);
-    }
 
     @Test
     public void testUpdateStudent(){
@@ -121,12 +84,42 @@ public class StudentManagerTest {
         assertTrue(changedStudent.getFirstName().equals("Scotty"));
     }
 
+
+
+//    @Test
+//    public void testDeleteStudent() throws Exception {
+//        Student s = StudentManager.readStudent("id69");
+//        StudentManager.delete(s);
+//        assertNull(StudentManager.readStudent("id69"));
+//    }
+
+
     @Test
-    public void testCreate01(){
-        Degree degree = StudentManager.readDegree("deg4");
-        assert degree != null;
-        StudentManager.createStudent("DoWang","Scotty", degree);
-        assertNotNull(StudentManager.readStudent("id10000"));
+    public void testAllStudentID() throws Exception {
+        Collection<String> allStudents = StudentManager.getAllStudentIds();
+        assert allStudents != null;
+        int count = 0;
+        for (String s : allStudents) {
+            assertEquals(s,("id"+(count++)));
+        }
+    }
+
+    @Test
+    public void testAllDegreeIDs01() throws Exception {
+        ArrayList<String> allDegrees = (ArrayList<String>) StudentManager.getAllDegreeIds();
+        assert allDegrees != null;
+        assertTrue(allDegrees.size() == 16);
+    }
+
+
+    @Test
+    public void testAllDegreeIDs02() throws Exception {
+        ArrayList<String> allDegrees = (ArrayList<String>) StudentManager.getAllDegreeIds();
+        assert allDegrees != null;
+        int count = 0;
+        for (String s : allDegrees) {
+            assertTrue(s.equals("deg"+(count++)));
+        }
     }
 
 
@@ -145,13 +138,13 @@ public class StudentManagerTest {
 
     @Test
     public void test1000read(){
-        long start = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
-            StudentManager.readStudent("id"+ (int)(Math.random() * 10000));
+            StudentManager.readStudent("id"+ (int)(Math.random()*10000));
         }
-        long end = System.currentTimeMillis();
-        System.out.println("time taken: " + (end-start));
-
-        assertTrue(end-start < 1000);
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime-startTime;
+        System.out.println("Time taken to read 1000 queries: " + totalTime);
+        assertTrue(totalTime <= 1000);
     }
 }

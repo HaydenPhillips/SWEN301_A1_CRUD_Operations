@@ -15,9 +15,13 @@ public class FindStudentDetails {
      */
     public static void main (String[] arg) {
 
-        StudentManager.readStudent("id99");
-        for(int i = 0; i< 16; i++) {
-            StudentManager.readDegree("deg" + i);
+        if(arg.length == 1){
+            Student student = StudentManager.readStudent(arg[0]);
+            if(student != null){
+                System.out.println(student.getId()+" - "+student.getFirstName()+"" +
+                        " - "+student.getName()+" - "+student.getDegree().getId());
+            }
         }
+
     }
 }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="studentmemdb-1.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/studentmemdb-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

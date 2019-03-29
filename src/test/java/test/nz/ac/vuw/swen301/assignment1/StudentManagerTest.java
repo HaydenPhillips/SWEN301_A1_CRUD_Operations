@@ -111,7 +111,7 @@ public class StudentManagerTest {
     public void timeTest(){
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
-            StudentManager.readStudent("id"+ (int)(Math.random()*10000));
+            StudentManager.readStudent("id"+ (int)(Math.random()*1000));
         }
         long endTime = System.currentTimeMillis();
         long totalTime = endTime-startTime;

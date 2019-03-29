@@ -14,7 +14,6 @@ c)  1) Store DB in local repo with: mvn install:install-file -Dfile=lib\studentm
     4) run: java -jar target/studentfinder.jar "id42"
     
 8\)  Static vars and methods should be minimised in order for the garbage collection to restore memory allocations.
-    Connections between the DB should be closed to lessen memory leakage.
-    
+    Connections between the DB should be closed to lessen memory leakage. No .close() causes memory leakage because the statements and the connections to occupy the heap space
     
     
